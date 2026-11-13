@@ -5,12 +5,18 @@ using System.Text.Json;
 using Microsoft.Extensions.AI;
 using OllamaSharp;
 
+var options = new ChatOptions
+{
+    MaxOutputTokens = 1000,
+    Temperature = 2
+};
+
 IChatClient chatClient = new OllamaApiClient("http://localhost:11434", "phi4-mini:latest");
 
 List<ChatMessage> history =
 [
     new(ChatRole.System, 
-    "You are dumb assistant, that only answer 'Hi, how can I help you?'")
+    "You are smart and useful assistant for coding'")
 ];
 
 Console.WriteLine("THE CHAT HAS STARTED, type 'vaza' to exit. \n");
@@ -27,7 +33,7 @@ while(true)
 
     var responseUpdates = new List<ChatResponseUpdate>();
     
-    await foreach(var responseUpdate in chatClient.GetStreamingResponseAsync(history))
+    await foreach(var responseUpdate in chatClient.GetStreamingResponseAsync(history, options))
     {
         Console.Write(responseUpdate.Text);
         responseUpdates.Add(responseUpdate);
