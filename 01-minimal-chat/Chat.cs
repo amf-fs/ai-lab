@@ -1,15 +1,8 @@
 #:package Microsoft.Extensions.AI@10.11.0
 #:package OllamaSharp@5.5.2
 
-using System.Text.Json;
 using Microsoft.Extensions.AI;
 using OllamaSharp;
-
-var options = new ChatOptions
-{
-    MaxOutputTokens = 1000,
-    Temperature = 2
-};
 
 IChatClient chatClient = new OllamaApiClient("http://localhost:11434", "phi4-mini:latest");
 
@@ -33,7 +26,7 @@ while(true)
 
     var responseUpdates = new List<ChatResponseUpdate>();
     
-    await foreach(var responseUpdate in chatClient.GetStreamingResponseAsync(history, options))
+    await foreach(var responseUpdate in chatClient.GetStreamingResponseAsync(history))
     {
         Console.Write(responseUpdate.Text);
         responseUpdates.Add(responseUpdate);
